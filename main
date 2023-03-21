@@ -11,186 +11,186 @@ import Foundation
 
 //enums
 enum Alturas {
-    case alto
-    case medio
-    case baixo
-    init(indice : Int){
-        switch indice{
-        case 1:
-            self = .alto
-            
-        case 2:
-            self = .medio
-            
-        case 3:
-            self = .baixo
-            
-        default:
-            //erro
-            fatalError("fazer")
-        }
-    }
+	case alto
+	case medio
+	case baixo
+	init(indice : Int){
+		switch indice{
+		case 1:
+			self = .alto
+			
+		case 2:
+			self = .medio
+			
+		case 3:
+			self = .baixo
+			
+		default:
+			//erro
+			fatalError("fazer")
+		}
+	}
 }
 
 enum Fisicos{
-    case magro
-    case gordo
-    case musculoso
-    case poucoMusculo
-    init(indice: Int) {
-        switch indice{
-        case 1:
-            self = .magro
-                
-        case 2:
-            self = .gordo
-                
-        case 3:
-            self = .musculoso
-                
-        case 4:
-            self = .poucoMusculo
-                
-        default:
-            //erro
-            fatalError("fazer")
-        }
-    }
+	case magro
+	case gordo
+	case musculoso
+	case poucoMusculo
+	init(indice: Int) {
+		switch indice{
+		case 1:
+			self = .magro
+				
+		case 2:
+			self = .gordo
+				
+		case 3:
+			self = .musculoso
+				
+		case 4:
+			self = .poucoMusculo
+				
+		default:
+			//erro
+			fatalError("fazer")
+		}
+	}
 }
-    
+	
 enum Gostos {
-    case jogos
-    case esportes
-    case viagens
-    case filmes
-    case series
-    case natureza
-    case praia
-    case festas
-    case fumar
-    case bebidasAlcolicas
-    //colocar mais se quiser
-    
-    init(indice : Int){
-        switch indice {
-            case 1:
-                self = .jogos
-            case 2:
-                self = .esportes
-            case 3:
-                self = .viagens
-            case 4:
-                self = .filmes
-            case 5:
-                self = .series
-            case 6:
-                self = .natureza
-            case 7:
-                self = .praia
-            case 8:
-                self = .festas
-            case 9:
-                self = .fumar
-            case 10:
-                self = .bebidasAlcolicas
-            default:
-                fatalError("fazer")
-        }
-    }
+	case jogos
+	case esportes
+	case viagens
+	case filmes
+	case series
+	case natureza
+	case praia
+	case festas
+	case fumar
+	case bebidasAlcolicas
+	//colocar mais se quiser
+	
+	init(indice : Int){
+		switch indice {
+			case 1:
+				self = .jogos
+			case 2:
+				self = .esportes
+			case 3:
+				self = .viagens
+			case 4:
+				self = .filmes
+			case 5:
+				self = .series
+			case 6:
+				self = .natureza
+			case 7:
+				self = .praia
+			case 8:
+				self = .festas
+			case 9:
+				self = .fumar
+			case 10:
+				self = .bebidasAlcolicas
+			default:
+				fatalError("fazer")
+		}
+	}
 }
 
 enum Sexos {
-    case masculino
-    case feminino
-    case ambos
-    init(indice : Int){
-        switch indice{
-        case 1:
-            self = .masculino
-            
-        case 2:
-            self = .feminino
-            
-        case 3:
-            self = .ambos
-            
-        default:
-            //erro
-            fatalError("fazer")
-        }
-    }
+	case masculino
+	case feminino
+	case ambos
+	init(indice : Int){
+		switch indice{
+		case 1:
+			self = .masculino
+			
+		case 2:
+			self = .feminino
+			
+		case 3:
+			self = .ambos
+			
+		default:
+			//erro
+			fatalError("fazer")
+		}
+	}
 }
 
 //classes e protocol
 
 protocol Pessoas {
-    var nome: String {get}
-    //var idade: Int {get}
-    //var dataNascimento: Date {get}
-    var altura: Alturas {get set}
-    var fisico: Fisicos {get set}
-    var gostos: [Gostos] {get set}
-    var sexo: Sexos {get set}
+	var nome: String {get}
+	//var idade: Int {get}
+	//var dataNascimento: Date {get}
+	var altura: Alturas {get set}
+	var fisico: Fisicos {get set}
+	var gostos: [Gostos] {get set}
+	var sexo: Sexos {get set}
 }
 
 class Usuario : Pessoas{
-    var nome: String
-    //var idade: Int
-    //var dataNascimento: Date
-    var altura: Alturas
-    var fisico: Fisicos
-    var gostos: [Gostos]
-    var rangeIdade: Int
-    //var idadeMax: Int
-    //var idadeMin: Int
-    var listaMatch: [Pessoas]
-    var sexo: Sexos
-    
-    init(nome: String, /*dataNascimento: Date,*/ altura: Alturas, fisico: Fisicos, gostos: [Gostos], rangeIdade: Int, sexo: Sexos) {
-        self.nome = nome
-        //self.dataNascimento = dataNascimento
-        //idade - ver como operar com os dates
-        //idade = 18
-        self.altura = altura
-        self.fisico = fisico
-        self.gostos = gostos
-        self.rangeIdade = rangeIdade
-        /*idadeMax = self.rangeIdade + self.idade
-        if (self.idade - self.rangeIdade) < 18{
-            idadeMin = 18
-        }
-        else{
-            idadeMin = self.idade - self.rangeIdade
-        }*/
-        listaMatch = []
-        self.sexo = sexo
-    }
+	var nome: String
+	//var idade: Int
+	//var dataNascimento: Date
+	var altura: Alturas
+	var fisico: Fisicos
+	var gostos: [Gostos]
+	var rangeIdade: Int
+	//var idadeMax: Int
+	//var idadeMin: Int
+	var listaMatch: [Pessoas]
+	var sexo: Sexos
+	
+	init(nome: String, /*dataNascimento: Date,*/ altura: Alturas, fisico: Fisicos, gostos: [Gostos], rangeIdade: Int, sexo: Sexos) {
+		self.nome = nome
+		//self.dataNascimento = dataNascimento
+		//idade - ver como operar com os dates
+		//idade = 18
+		self.altura = altura
+		self.fisico = fisico
+		self.gostos = gostos
+		self.rangeIdade = rangeIdade
+		/*idadeMax = self.rangeIdade + self.idade
+		if (self.idade - self.rangeIdade) < 18{
+			idadeMin = 18
+		}
+		else{
+			idadeMin = self.idade - self.rangeIdade
+		}*/
+		listaMatch = []
+		self.sexo = sexo
+	}
 }
 
 class Pretendentes : Pessoas{
-    var sexo: Sexos
-    var nome: String
-    //var idade: Int
-    //var dataNascimento: Date
-    var altura: Alturas
-    var fisico: Fisicos
-    var gostos: [Gostos]
-    var deuMatch: Bool
-    
-    init(sexo : Sexos, nome : String) {
-        self.sexo = sexo
-        self.nome = nome
-        deuMatch = false
-        altura = Alturas(indice: Int.random(in: 1...3))
-        fisico = Fisicos(indice: Int.random(in: 1...4))
-        //var escolhidos : [Int] = []
-        gostos = []
-        //for i in 0...4{
-            //finalizar enum Gostos para terminar aqui
-        //}
-        //dataNascimento = Date.init(timeIntervalSinceNow: -)
-        //idade = Data.init() - data
-    }
+	var sexo: Sexos
+	var nome: String
+	//var idade: Int
+	//var dataNascimento: Date
+	var altura: Alturas
+	var fisico: Fisicos
+	var gostos: [Gostos]
+	var deuMatch: Bool
+	
+	init(sexo : Sexos, nome : String) {
+		self.sexo = sexo
+		self.nome = nome
+		deuMatch = false
+		altura = Alturas(indice: Int.random(in: 1...3))
+		fisico = Fisicos(indice: Int.random(in: 1...4))
+		//var escolhidos : [Int] = []
+		gostos = []
+		//for i in 0...4{
+			//finalizar enum Gostos para terminar aqui
+		//}
+		//dataNascimento = Date.init(timeIntervalSinceNow: -)
+		//idade = Data.init() - data
+	}
 }
 
 //main
@@ -200,112 +200,125 @@ var listaPretendentes : [Pretendentes] = []
 let listaNomesFemininos: [String] = ["Julia", "Sohpia", "Isabella", "Maria Eduarda", "Manuela", "Giovana", "Alice", "Laura", "Luiza", "Beatriz", "Mariana", "Yasmin", "Gabriela", "Rafaela", "Maria Clara", "Ana Clara", "Isabelle", "Lara", "Letícia", "Ana Julia", "Ana", "Nicole", "Valentina"]
 let listaNomesMasculinos: [String] = ["Miguel", "Arthur", "Gael", "Théo", "Heitor", "Ravi", "Davi", "Bernardo", "Noah", "Gabriel", "Samuel", "Pedro", "Anthony", "Isaac", "Benício", "Benjamin", "Matheus", "Lucas"]
 for i in 0...49{
-    if i < 25{
-        listaPretendentes.append(Pretendentes(sexo: .masculino, nome: listaNomesMasculinos[Int.random(in: 0...(listaNomesMasculinos.count-1))]))
-    }
-    else{
-        listaPretendentes.append(Pretendentes(sexo: .feminino, nome: listaNomesFemininos[Int.random(in: 0...(listaNomesFemininos.count-1))]))
-    }
+	if i < 25{
+		listaPretendentes.append(Pretendentes(sexo: .masculino, nome: listaNomesMasculinos[Int.random(in: 0...(listaNomesMasculinos.count-1))]))
+	}
+	else{
+		listaPretendentes.append(Pretendentes(sexo: .feminino, nome: listaNomesFemininos[Int.random(in: 0...(listaNomesFemininos.count-1))]))
+	}
 }
 //
 
 //criar usuário
+print("Bem-vindo! \nDigite seu nome!")
 var nomeU = ""
 var entradaNome = readLine()
 if let str = entradaNome {
-    nomeU = str
+	nomeU = str
 }
 
+print("Agora digite a altura ideal para o seu match! \n[1] - Alto \n[2] - Médio \n[3] - Baixo")
 var alturaNum = 0
 var entradaAltura = readLine()
-    if let str = entradaAltura {
-        if let num = Int(str){
-            alturaNum = num
-        }
-    }
+	if let str = entradaAltura {
+		if let num = Int(str){
+			alturaNum = num
+		}
+	}
 var alturaU = Alturas(indice: alturaNum)
 
+print("Agora digite o tipo físico ideal para o seu match! \n[1] - Magro \n[2] - Gordo \n[3] - Musculoso \n[4] - Pouco musculoso")
 var fisicoNum = 0
 var entradaFisico = readLine()
-    if let str = entradaFisico {
-        if let num = Int(str){
-            fisicoNum = num
-        }
-    }
+	if let str = entradaFisico {
+		if let num = Int(str){
+			fisicoNum = num
+		}
+	}
 var fisicoU = Fisicos(indice: fisicoNum)
+
 
 var continuar = 0
 var gostoNum = 0
 var gostosU: [Gostos] = []
 for i in 0...4{
-    var entradaGosto = readLine()
-        if let str = entradaGosto {
-            if let num = Int(str){
-                gostoNum = num
-            }
-        }
-    gostosU.append(Gostos(indice: gostoNum))
-    
-    var entradaCont = readLine()
-        if let str = entradaCont {
-            if let num = Int(str){
-                continuar = num
-            }
-        }
-    if continuar == 1{
-        break
-    }
+	print("Digite o gosto \(i + 1) entre: \n[1] - Jogos \n[2] - Esportes \n[3] - Viagens \n[4] - Filmes \n[5] - Series \n[6] - Natureza \n[7] - Praia \n[8] - Festas \n[9] - Fumar \n[10] - Bebidas alcoolicas \n")
+	let entradaGosto = readLine()
+		if let str = entradaGosto {
+			if let num = Int(str){
+				gostoNum = num
+			}
+		}
+	gostosU.append(Gostos(indice: gostoNum))
+	
+	if i == 4 {
+		break
+	}
+	
+	print("Deseja acrescentar novos gostos? \n[0] - Sim \n[1] - Não")
+	
+	let entradaCont = readLine()
+		if let str = entradaCont {
+			if let num = Int(str){
+				continuar = num
+			}
+		}
+	if continuar == 1{
+		break
+	}
 }
 
+print("Digite o range de idade em relaçao a sua")
 var rangeU = 0
 var entradaRange = readLine()
-    if let str = entradaRange {
-        if let num = Int(str){
-            rangeU = num
-        }
-    }
+	if let str = entradaRange {
+		if let num = Int(str){
+			rangeU = num
+		}
+	}
 
+print("Você procura: \n[1] - Homens \n[2] - Mulheres \n[3] - Ambos")
 var sexoNum = 0
 var entradaSexo = readLine()
-    if let str = entradaSexo {
-        if let num = Int(str){
-            sexoNum = num
-        }
-    }
+	if let str = entradaSexo {
+		if let num = Int(str){
+			sexoNum = num
+		}
+	}
 var sexoU = Sexos(indice: sexoNum)
 
-var usuario = Usuario(nome: nomeU, altura: alturaU, fisico: fisicoU, gostos: gostosU, rangeIdade: rangeU, sexo: sexoU)
+var usuario =  Usuario(nome: nomeU, altura: alturaU, fisico: fisicoU, gostos: gostosU, rangeIdade: rangeU, sexo: sexoU)
 //
 
 //menu
 var aplicacao = true
 var opcaoMenu = -1
 while (aplicacao) {
-    print("\nOlá \(usuario.nome), o que pretende fazer?\n1- Dar Match\n2- Editar Perfil\n\n0- Sair da aplicacao")
-    var entradaMenu = readLine()
-        if let str = entradaMenu {
-            if let num = Int(str){
-                opcaoMenu = num
-            }
-        }
-    
-    switch opcaoMenu {
-        case 1:
-            //dar match
-            print("fazer")
-        
-        case 2:
-            //editar perfil
-            print("fazer")
-        
-        case 0:
-            aplicacao = false
-    
-        default:
-            print("Digite uma opção válida")
-    }
+	print("\nOlá \(usuario.nome), o que pretende fazer?\n1- Dar Match\n2- Editar Perfil\n\n0- Sair da aplicacao")
+	let entradaMenu = readLine()
+		if let str = entradaMenu {
+			if let num = Int(str){
+				opcaoMenu = num
+			}
+		}
+	
+	switch opcaoMenu {
+		case 1:
+			//dar match
+			print("fazer")
+		
+		case 2:
+			//editar perfil
+			print("fazer")
+		
+		case 0:
+			aplicacao = false
+	
+		default:
+			print("Digite uma opção válida")
+	}
 
 }
 
-print("/n/n/nOBRIGADO POR USAR O SWIFTINDER 🔥")
+print("\n\nOBRIGADO POR USAR O SWIFTINDER 🔥")
 //menu
