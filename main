@@ -1,1 +1,30 @@
 // começa o código
+
+//enums
+
+
+
+//classes e protocol
+
+//main
+//criar o usuario e a lista de pretendentes aleatórios
+
+var aplicacao = true
+while (aplicacao) {
+  print("Olá (nomeDoUsuario), o que pretende fazer?\n1- Dar Match\n2- Editar Perfil\n\n0- Sair da aplicacao")
+  var opcaoMenu = readLine()
+  switch opcaoMenu {
+    case 1:
+      //dar match
+  
+    case 2:
+      //editar perfil
+  
+    case 0:
+      aplicacao = false
+    
+    default:
+      print("Digite uma opçao válida")
+  }
+
+}
