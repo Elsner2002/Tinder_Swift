@@ -1,59 +1,170 @@
+//
+//  main.swift
+//  SwifTinder
+//
+//  Created by Felipe  Elsner Silva on 21/03/23.
+//
+
+import Foundation
+
 // começa o código
 
 //enums
-
-enum Nomes{
-
-}
-
 enum Alturas {
-  case alto
-  case medio
-  case baixo
+    case alto
+    case medio
+    case baixo
+    init(indice : Int){
+        switch indice{
+        case 1:
+            self = .alto
+            
+        case 2:
+            self = .medio
+            
+        case 3:
+            self = .baixo
+            
+        default:
+            //erro
+            fatalError("fazer")
+        }
+    }
 }
 
-enum Fisico{
-  case magro
-  case gordo
-  case musculoso
-  case poucoMusculo
+enum Fisicos{
+    case magro
+    case gordo
+    case musculoso
+    case poucoMusculo
+    init(indice: Int) {
+        switch indice{
+        case 1:
+            self = .magro
+                
+        case 2:
+            self = .gordo
+                
+        case 3:
+            self = .musculoso
+                
+        case 4:
+            self = .poucoMusculo
+                
+        default:
+            //erro
+            fatalError("fazer")
+        }
+    }
 }
-
+    
 enum Gostos {
-  case jogos
-  case esportes
-  case viagens
-  case filmes
-  case series
-  case natureza
-  case praia
-  case festas
-  case fumar
-  case bebidasAlcolicas
-  //colocar mais se quiser
+    case jogos
+    case esportes
+    case viagens
+    case filmes
+    case series
+    case natureza
+    case praia
+    case festas
+    case fumar
+    case bebidasAlcolicas
+    //colocar mais se quiser
+    //init(indice : Int){
+        
+    //}
 }
 
 //classes e protocol
+
+protocol Pessoas {
+    var nome: String {get}
+    var idade: Int {get}
+    var dataNascimento: Date {get}
+    var altura: Alturas {get set}
+    var fisico: Fisicos {get set}
+    var gostos: [Gostos] {get set}
+}
+
+class Usuario : Pessoas{
+    var nome: String
+    var idade: Int
+    var dataNascimento: Date
+    var altura: Alturas
+    var fisico: Fisicos
+    var gostos: [Gostos]
+    var rangeIdade: Int
+    var idadeMax: Int
+    var idadeMin: Int
+    
+    init(nome: String, dataNascimento: Date, altura: Alturas, fisico: Fisicos, gostos: [Gostos], rangeIdade: Int) {
+        self.nome = nome
+        self.dataNascimento = dataNascimento
+        //idade - ver como operar com os dates
+        idade = 18
+        self.altura = altura
+        self.fisico = fisico
+        self.gostos = gostos
+        self.rangeIdade = rangeIdade
+        idadeMax = self.rangeIdade + self.idade
+        if (self.idade - self.rangeIdade) < 18{
+            idadeMin = 18
+        }
+        else{
+            idadeMin = self.idade - self.rangeIdade
+        }
+    }
+}
+
+class Pretendentes : Pessoas{
+    var nome: String
+    var idade: Int
+    var dataNascimento: Date
+    var altura: Alturas
+    var fisico: Fisicos
+    var gostos: [Gostos]
+    
+    init(nome: String, idade: Int, dataNascimento: Date, altura: Alturas, fisico: Fisicos, gostos: [Gostos]) {
+        self.nome = nome
+        self.idade = idade
+        self.dataNascimento = dataNascimento
+        self.altura = altura
+        self.fisico = fisico
+        self.gostos = gostos
+    }
+}
 
 //main
 //criar o usuario e a lista de pretendentes aleatórios
 
 var aplicacao = true
+var opcaoMenu = -1
 while (aplicacao) {
-  print("Olá (nomeDoUsuario), o que pretende fazer?\n1- Dar Match\n2- Editar Perfil\n\n0- Sair da aplicacao")
-  var opcaoMenu = readLine()
-  switch opcaoMenu {
-    case 1:
-      //dar match
-  
-    case 2:
-      //editar perfil
-  
-    case 0:
-      aplicacao = false
     
-    default:
-      print("Digite uma opçao válida")
-  }
+    print("Olá (nomeDoUsuario), o que pretende fazer?\n1- Dar Match\n2- Editar Perfil\n\n0- Sair da aplicacao")
+    var entradaMenu = readLine()
+        if let str = entradaMenu {
+            if let num = Int(str){
+                opcaoMenu = num
+            }
+        }
+    
+    switch opcaoMenu {
+        case 1:
+            //dar match
+            print("fazer")
+        
+        case 2:
+            //editar perfil
+            print("fazer")
+        
+        case 0:
+            aplicacao = false
+    
+        default:
+            print("Digite uma opçao válida")
+    }
 
 }
+
+
