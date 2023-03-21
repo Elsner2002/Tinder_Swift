@@ -30,6 +30,16 @@ enum Alturas {
             fatalError("fazer")
         }
     }
+    var descricao : String{
+        switch self{
+        case .alto:
+            return "Alto"
+        case .medio:
+            return "Médio"
+        case .baixo:
+            return "Baixo"
+        }
+    }
 }
 
 enum Fisicos{
@@ -54,6 +64,18 @@ enum Fisicos{
         default:
             //erro
             fatalError("fazer")
+        }
+    }
+    var descricao : String{
+        switch self{
+        case .magro:
+            return "Magro"
+        case .gordo:
+            return "Gordo"
+        case .musculoso:
+            return "Musculoso"
+        case .poucoMusculo:
+            return "Pouco Musculoso"
         }
     }
 }
@@ -97,6 +119,31 @@ enum Gostos {
                 fatalError("fazer")
         }
     }
+    
+    var descricao : String{
+        switch self{
+        case .jogos:
+            return "Jogos"
+        case .esportes:
+            return "Esportes"
+        case .viagens:
+            return "Viagens"
+        case .filmes:
+            return "Filmes"
+        case .series:
+            return "Séries"
+        case .natureza:
+            return "Natureza"
+        case .praia:
+            return "Praia"
+        case .festas:
+            return "Festas"
+        case .fumar:
+            return "Fumar"
+        case .bebidasAlcolicas:
+            return "Bebidas Alcólicas"
+        }
+    }
 }
 
 enum Sexos {
@@ -119,6 +166,16 @@ enum Sexos {
             fatalError("fazer")
         }
     }
+    var descricao : String{
+        switch self{
+        case .masculino:
+            return "Masculino"
+        case .feminino:
+            return "Feminino"
+        case .ambos:
+            return "Ambos"
+        }
+    }
 }
 
 //classes e protocol
@@ -131,9 +188,12 @@ protocol Pessoas {
     var fisico: Fisicos {get set}
     var gostos: [Gostos] {get set}
     var sexo: Sexos {get set}
+    
+    func toString()
 }
 
 class Usuario : Pessoas{
+    
     var nome: String
     //var idade: Int
     //var dataNascimento: Date
@@ -172,9 +232,25 @@ class Usuario : Pessoas{
         listaMatch = []
         self.sexo = sexo
     }
+    
+    func toString() {
+        print("\(self.nome), suas preferencias atuais são:\n\(self.altura)\n\(self.fisico)\n")
+        print("colocar idadeMin e idadeMax quando idades estiverem prontas\n\(self.sexo)\n")
+        for gosto in self.gostos {
+            print("\(gosto)\n")
+        }
+    }
+    
+    func listaDeMatches(){
+        for m in listaMatch{
+            m.toString()
+            print("\n\n")
+        }
+    }
 }
 
 class Pretendentes : Pessoas{
+    
     var sexo: Sexos
     var nome: String
     //var idade: Int
@@ -197,6 +273,13 @@ class Pretendentes : Pessoas{
         //}
         //dataNascimento = Date.init(timeIntervalSinceNow: -)
         //idade = Data.init() - data
+    }
+    
+    func toString() {
+        print("\(self.nome) - idade\n\(self.altura)\n\(self.fisico)\n\(self.sexo)\n")
+        for gosto in self.gostos {
+            print("\(gosto)\n")
+        }
     }
 }
 
@@ -323,7 +406,7 @@ var usuario =  Usuario(nome: nomeU, altura: alturaU, fisico: fisicoU, gostos: go
 var aplicacao = true
 var opcaoMenu = -1
 while (aplicacao) {
-    print("\nOlá \(usuario.nome), o que pretende fazer?\n[1]- Dar Match\n[2]- Editar Perfil\n\n[0]- Sair da aplicacao")
+    print("\nOlá \(usuario.nome), o que pretende fazer?\n\n[1]- Dar Match\n[2]- Editar Perfil\n\n[0]- Sair da aplicacao")
     let entradaMenu = readLine()
         if let str = entradaMenu {
             if let num = Int(str){
