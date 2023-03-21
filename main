@@ -2,7 +2,36 @@
 
 //enums
 
+enum Nomes{
 
+}
+
+enum Alturas {
+  case alto
+  case medio
+  case baixo
+}
+
+enum Fisico{
+  case magro
+  case gordo
+  case musculoso
+  case poucoMusculo
+}
+
+enum Gostos {
+  case jogos
+  case esportes
+  case viagens
+  case filmes
+  case series
+  case natureza
+  case praia
+  case festas
+  case fumar
+  case bebidasAlcolicas
+  //colocar mais se quiser
+}
 
 //classes e protocol
 
