@@ -2,7 +2,7 @@
 //  main.swift
 //  SwifTinder
 //
-//  Created by Felipe  Elsner Silva on 21/03/23.
+//  Created by Felipe  Elsner Silva e Fabricio Masiero on 21/03/23.
 //
 
 import Foundation
@@ -297,7 +297,7 @@ class Pretendentes : Pessoas{
 //funções
 
 func digiteAltura() -> Alturas{
-    print("Digite a altura ideal para o seu match! \n[1] - Alto \n[2] - Médio \n[3] - Baixo")
+    print("Digite a altura ideal para o seu match! \n[1] - Alto (alturas maiores que 1,86m)\n[2] - Médio (alturas entre 1,66m e 1,85m)\n[3] - Baixo (alturas até 1,65m)")
     var alturaNum = 0
     let entradaAltura = readLine()
         if let str = entradaAltura {
@@ -324,6 +324,7 @@ func digiteGostos() -> [Gostos]{
     var continuar = 0
     var gostoNum = 0
     var gostosU: [Gostos] = []
+    print("Nos diga até 5 coisas que você gosta para encontrarmos seu Match")
     for i in 0...4{
         print("Digite o gosto \(i + 1) entre: \n[1] - Jogos \n[2] - Esportes \n[3] - Viagens \n[4] - Filmes \n[5] - Series \n[6] - Natureza \n[7] - Praia \n[8] - Festas \n[9] - Fumar \n[10] - Bebidas alcoolicas \n")
         let entradaGosto = readLine()
@@ -354,7 +355,7 @@ func digiteGostos() -> [Gostos]{
 }
 
 func digiteRange() -> Int{
-    print("Digite a faixa de idade que deseja encontrar em relaçao a sua")
+    print("Digite a faixa de idade que deseja encontrar em relaçao a sua\n Exemplo: se você tem 22 anos, em uma faixa de 3 anos irá encontrar pessoas entre 19 e 25 anos")
     var rangeU = 0
     let entradaRange = readLine()
         if let str = entradaRange {
@@ -394,7 +395,7 @@ var possiveisPretendentes: [Pretendentes] = []
 //
 
 //criar usuário
-print("Bem-vindo! \nDigite seu nome!")
+print("Bem-vindo! \nDigite seu primeiro nome!")
 var nomeU = ""
 var entradaNome = readLine()
 if let str = entradaNome {
@@ -474,10 +475,13 @@ while (aplicacao) {
                         }
                     }
                 switch matchNum {
-                    case 1:
-                        p.deuMatch = true
-                        usuario.listaMatch.append(p)
                     case 2:
+                        var match = Bool.random()
+                        if match {
+                            p.deuMatch = true
+                            usuario.listaMatch.append(p)
+                        }
+                    case 1:
                         continue
                     case 0:
                         break
