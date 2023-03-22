@@ -11,16 +11,51 @@ import Foundation
 
 //MARK: Erros
 enum Erros: Error {
-    case invalidOption
+    case invalidOptionMenu
+    case invalidHobbie
+    case invalidThreeOptions
+    case invalidOptionEdit
+    case invalidTwoOptions
     case invalidAge
-    //case invalidDate
+    case invalidDate
     case invalidName
     case missOption
+    case invalidMatch
 }
 
-func validadeOption(value: Int) throws {
+func validadeMatch(value: Int) throws{
+    if value < 0 || value >= 3 {
+        throw Erros.invalidMatch
+    }
+}
+
+func validadeOptionMenu(value: Int) throws {
     if value < 0 || value >= 5 {
-        throw Erros.invalidOption
+        throw Erros.invalidOptionMenu
+    }
+}
+
+func validadeOptionThree(value: Int) throws {
+    if value <= 0 || value >= 4 {
+        throw Erros.invalidThreeOptions
+    }
+}
+
+func validadeOptionTwo(value: Int) throws {
+    if value < 0 || value >= 2 {
+        throw Erros.invalidTwoOptions
+    }
+}
+
+func validadeHobbie(value: Int) throws {
+    if value < 0 || value >= 13 {
+        throw Erros.invalidHobbie
+    }
+}
+
+func validadeOptionEdit(value: Int) throws {
+    if value < 0 || value >= 7 {
+        throw Erros.invalidOptionEdit
     }
 }
 
@@ -42,12 +77,19 @@ func missingOption(option: String) throws{
     }
 }
 
+func validadeDate(data: String) throws{
+    if data.count != 10 && !(data.contains("/")) && !(data.contains("1") || data.contains("2") || data.contains("3") || data.contains("4") || data.contains("5") || data.contains("6") || data.contains("7") || data.contains("8") || data.contains("9") || data.contains("0")){
+        throw Erros.invalidDate
+    }
+}
+
 //MARK: Enums
 enum Alturas {
     case alto
     case medio
     case baixo
     init(indice : Int){
+        
         switch indice{
         case 1:
             self = .alto
@@ -124,7 +166,8 @@ enum Gostos {
     case festas
     case fumar
     case bebidasAlcolicas
-    //colocar mais se quiser
+    case musica
+    case academia
     
     init(indice : Int){
         switch indice {
@@ -148,6 +191,10 @@ enum Gostos {
             self = .fumar
         case 10:
             self = .bebidasAlcolicas
+        case 11:
+            self = .musica
+        case 12:
+            self = .academia
         default:
             fatalError("fazer")
         }
@@ -175,6 +222,10 @@ enum Gostos {
             return "Fumar"
         case .bebidasAlcolicas:
             return "Bebidas Alcólicas"
+        case .musica:
+            return "Música"
+        case .academia:
+            return "Academia"
         }
     }
 }
@@ -241,15 +292,21 @@ class Usuario : Pessoas{
     init(nome: String, dataNascimento: Date, altura: Alturas, fisico: Fisicos, gostos: [Gostos], rangeIdade: Int, sexo: Sexos) {
         self.nome = nome
         self.dataNascimento = dataNascimento
-        let dataAtual = Calendar.current                                                         // cria uma variavel pra armazenar a data atual
-        let ano = dataAtual.dateComponents([.year], from: self.dataNascimento, to: Date())       // seleciona o componente ano da dataAtual e calcula a diferença entre ele e a data de hoje (Date())
-        self.idade = ano.year ?? 18                                                              // ou força o ano ou substitui por um opcional (year ?? 0)
-        if idade >= 18 {                                                                         // se receber a data no formato correto executa esse if
-            print("Bem-vindo")
-        } else if idade < 18 {
-            //erro
-            print("Você precisa ter 18 anos ou mais para acessar o aplicativo.")
+        let dataAtual = Calendar.current
+        let ano = dataAtual.dateComponents([.year], from: self.dataNascimento, to: Date())
+        let idadeV = ano.year ?? 18
+        self.idade = 0
+        do{
+            try validadeAge(age: idadeV)
+            self.idade = idadeV
         }
+        catch Erros.invalidAge{
+            fatalError("Você precisa ter mais de 18 anos para usar esse App")
+        }
+        catch{
+            print("Error")
+        }
+        
         self.altura = altura
         self.fisico = fisico
         self.gostos = gostos
@@ -312,9 +369,9 @@ class Pretendentes : Pessoas{
         var escolhidos : [Int] = []
         gostos = [.jogos, .jogos, .jogos, .jogos, .jogos]
         for i in 0...4{
-            var g = Int.random(in: 1...10)
+            var g = Int.random(in: 1...12)
             while escolhidos.contains(g){
-                g = Int.random(in: 1...10)
+                g = Int.random(in: 1...12)
             }
             escolhidos.append(g)
             gostos[i] = Gostos(indice: g)
@@ -337,10 +394,23 @@ class Pretendentes : Pessoas{
 func digiteAltura() -> Alturas{
     print("\nDigite a altura ideal para o seu match! \n[1] - Alto (alturas maiores que 1,86m)\n[2] - Médio (alturas entre 1,66m e 1,85m)\n[3] - Baixo (alturas até 1,65m)")
     var alturaNum = 0
-    let entradaAltura = readLine()
-    if let str = entradaAltura {
-        if let num = Int(str){
-            alturaNum = num
+    var validA = true
+    while validA{
+        let entradaAltura = readLine()
+        do{
+            if let str = entradaAltura {
+                if let num = Int(str){
+                    try validadeOptionThree(value: num)
+                    alturaNum = num
+                }
+            }
+            validA = false
+        }
+        catch Erros.invalidThreeOptions{
+            print("Digite uma das opcoes validas\n[1] - Alto (alturas maiores que 1,86m)\n[2] - Médio (alturas entre 1,66m e 1,85m)\n[3] - Baixo (alturas até 1,65m)")
+        }
+        catch{
+            print("Error")
         }
     }
     return Alturas(indice: alturaNum)
@@ -349,10 +419,24 @@ func digiteAltura() -> Alturas{
 func digiteFisico() -> Fisicos{
     print("\nDigite o tipo físico ideal para o seu match! \n[1] - Magro \n[2] - Gordo \n[3] - Musculoso \n[4] - Pouco musculoso")
     var fisicoNum = 0
-    let entradaFisico = readLine()
-    if let str = entradaFisico {
-        if let num = Int(str){
-            fisicoNum = num
+    var validF = true
+    while validF{
+        let entradaFisico = readLine()
+        do{
+            if let str = entradaFisico {
+                if let num = Int(str){
+                    try validadeOptionMenu(value: num-1)
+                    fisicoNum = num
+                }
+            }
+            validF = false
+        }
+        catch Erros.invalidOptionMenu{
+            print("Digite uma das opcoes validas\n[1] - Magro \n[2] - Gordo \n[3] - Musculoso \n[4] - Pouco musculoso")
+        
+        }
+        catch{
+            print("Error")
         }
     }
     return Fisicos(indice: fisicoNum)
@@ -364,7 +448,7 @@ func digiteGostos() -> [Gostos]{
     var gostosU: [Gostos] = []
     print("\nNos diga até 5 coisas que você gosta para encontrarmos seu Match")
     for i in 0...4{
-        print("Digite o interesse \(i + 1) entre: \n[1] - Jogos \n[2] - Esportes \n[3] - Viagens \n[4] - Filmes \n[5] - Series \n[6] - Natureza \n[7] - Praia \n[8] - Festas \n[9] - Fumar \n[10] - Bebidas alcoolicas \n")
+        print("Digite o interesse \(i + 1) entre: \n[1] - Jogos \n[2] - Esportes \n[3] - Viagens \n[4] - Filmes \n[5] - Series \n[6] - Natureza \n[7] - Praia \n[8] - Festas \n[9] - Fumar \n[10] - Bebidas alcoolicas \n[11] - Música \n[12] - Academia")
         var entradaGosto = readLine()
         if let str = entradaGosto {
             if let num = Int(str){
@@ -416,10 +500,23 @@ func digiteRange() -> Int{
 func digiteSexo() -> Sexos{
     print("\nVocê procura: \n[1] - Homens \n[2] - Mulheres \n[3] - Ambos")
     var sexoNum = 0
-    let entradaSexo = readLine()
-    if let str = entradaSexo {
-        if let num = Int(str){
-            sexoNum = num
+    var validA = true
+    while validA{
+        let entradaSexo = readLine()
+        do{
+            if let str = entradaSexo {
+                if let num = Int(str){
+                    try validadeOptionThree(value: num)
+                    sexoNum = num
+                }
+            }
+            validA = false
+        }
+        catch Erros.invalidThreeOptions{
+            print("Digite uma das opcoes validas\n[1] - Homens \n[2] - Mulheres \n[3] - Ambos")
+        }
+        catch{
+            print("Error")
         }
     }
     return Sexos(indice: sexoNum)
@@ -428,20 +525,27 @@ func digiteSexo() -> Sexos{
 func digiteData() -> Date{
     let data = DateFormatter()
     data.dateFormat = "dd/MM/yyyy"
+    print("\nDigite a sua data de nascimento no seguinte formato: DD/MM/AAAA. Não esqueça de separar o dia, mês e ano com a barra.")
     while true {
-        print("\nDigite a sua data de nascimento no seguinte formato: DD/MM/AAAA. Não esqueça de separar o dia, mês e ano com a barra.")
-        let input = readLine() ?? "01/01/2004"
-        if let dataN = data.date(from: input) {                 //input recebe readLine e data recebe input em formato de data formatada
-            return dataN
+        do{
+            let input = readLine() ?? ""
+            try validadeDate(data: input)
+            if let dataN = data.date(from: input) {
+                return dataN
+            }
         }
-        else{
-            print("Digite uma data válida")
+        catch Erros.invalidDate{
+            print("Digite uma data válida no formato DD/MM/AAAA")
         }
+        catch{
+            print("Error")
+        }
+        
     }
 }
 //MARK: main
 
-//criando lista de pretendentes aleatorios
+//MARK: criando lista de pretendentes aleatorios
 var listaPretendentes : [Pretendentes] = []
 let listaNomesFemininos: [String] = ["Julia", "Sohpia", "Isabella", "Maria Eduarda", "Manuela", "Giovana", "Alice", "Laura", "Luiza", "Beatriz", "Mariana", "Yasmin", "Gabriela", "Rafaela", "Maria Clara", "Ana Clara", "Isabelle", "Lara", "Letícia", "Ana Julia", "Ana", "Nicole", "Valentina"]
 let listaNomesMasculinos: [String] = ["Miguel", "Arthur", "Gael", "Théo", "Heitor", "Ravi", "Davi", "Bernardo", "Noah", "Gabriel", "Samuel", "Pedro", "Anthony", "Isaac", "Benício", "Benjamin", "Matheus", "Lucas"]
@@ -499,11 +603,11 @@ while (aplicacao) {
     do {
         if let str = entradaMenu, let num = Int(str) {
             try missingOption(option: str)
-            try validadeOption(value: num)
+            try validadeOptionMenu(value: num)
             opcaoMenu = num
         }
     }
-    catch Erros.invalidOption {
+    catch Erros.invalidOptionMenu {
         print("Opção invalida, tente novamente")
         continue
     }
@@ -565,27 +669,40 @@ while (aplicacao) {
             print("------------------------------------------------------------------------------------\n")
             print("Digite [1] para ❌, [2] para 💚 e [0] para voltar ao menu principal")
             var matchNum = -1
-            let entradaMatch = readLine()
-            if let str = entradaMatch {
-                if let num = Int(str){
-                    matchNum = num
+            var matchBool = true
+            while matchBool {
+                print("Qual informação de preferencia quer mudar?\n[1] - Altura\n[2] - Físico\n[3] - Gostos\n[4] - Faixa de Idade\n[5] - Sexo\n\n[0] - Retornar")
+                let entradaMatch = readLine()
+                do{
+                    if let str = entradaMatch {
+                        if let num = Int(str){
+                            try validadeMatch(value: num)
+                            matchNum = num
+                        }
+                    }
+                    switch matchNum {
+                    case 2:
+                        let match = Bool.random()
+                        if match {
+                            print("MATCH!!")
+                            print("\(usuario.nome) ❤️ \(p.nome)")
+                            p.deuMatch = true
+                            usuario.listaMatch.append(p)
+                        }
+                    case 1:
+                        continue
+                    case 0:
+                        break
+                    default:
+                        print("Opção inváldia")
+                    }
                 }
-            }
-            switch matchNum {
-            case 2:
-                let match = Bool.random()
-                if match {
-                    print("MATCH!!")
-                    print("\(usuario.nome) ❤️ \(p.nome)")
-                    p.deuMatch = true
-                    usuario.listaMatch.append(p)
+                catch Erros.invalidMatch{
+                    print("Digite uma informação válida entre:[1] para ❌, [2] para 💚 e [0] para voltar ao menu principal")
                 }
-            case 1:
-                continue
-            case 0:
-                break
-            default:
-                print("Opção inváldia")
+                catch{
+                    print("Error")
+                }
             }
         }
         
@@ -596,34 +713,41 @@ while (aplicacao) {
         while edicaoPerfil {
             print("Qual informação de preferencia quer mudar?\n[1] - Altura\n[2] - Físico\n[3] - Gostos\n[4] - Faixa de Idade\n[5] - Sexo\n\n[0] - Retornar")
             let entradaEdicao = readLine()
-            if let str = entradaEdicao {
-                if let num = Int(str){
-                    edicaoNum = num
+            do{
+                if let str = entradaEdicao {
+                    if let num = Int(str){
+                        try validadeOptionEdit(value: num)
+                        edicaoNum = num
+                    }
+                }
+                switch edicaoNum {
+                case 1:
+                    usuario.altura = digiteAltura()
+                    
+                case 2:
+                    usuario.fisico = digiteFisico()
+                    
+                case 3:
+                    usuario.gostos = digiteGostos()
+                    
+                case 4:
+                    usuario.rangeIdade = digiteRange()
+                    
+                case 5:
+                    usuario.sexo = digiteSexo()
+                    
+                case 0:
+                    edicaoPerfil = false
+                    
+                default:
+                    print("Digite uma opção válida")
                 }
             }
-            switch edicaoNum {
-            case 1:
-                usuario.altura = digiteAltura()
-                
-            case 2:
-                usuario.fisico = digiteFisico()
-                
-            case 3:
-                usuario.gostos = digiteGostos()
-                
-            case 4:
-                usuario.rangeIdade = digiteRange()
-                
-            case 5:
-                usuario.sexo = digiteSexo()
-                
-            case 0:
-                edicaoPerfil = false
-                
-            default:
-                print("Digite uma opção válida")
-                
-                
+            catch Erros.invalidOptionEdit{
+                print("Digite uma informação válida entre:\n[1] - Altura\n[2] - Físico\n[3] - Gostos\n[4] - Faixa de Idade\n[5] - Sexo\n\n[0] - Retornar")
+            }
+            catch{
+                print("Error")
             }
         }
     case 3:
@@ -641,3 +765,15 @@ while (aplicacao) {
 
 print("\n\nOBRIGADO POR USAR O SWIFTINDER 🔥")
 //menu
+
+
+/*FALTA:
+
+ Erros na função de definicao dos gostos do usuario, tanto se colcoar um gosto que não existe quanto se entre colocar um gosto a mais ou não a pessoa quer ou não(SEGUIR O EXEMPLO QUE O IGOR NOS PASSOU QUE ESTÁ NO MENU PRINCIPAL) (fazer while para ficar pedindo até a pessoa colocar uma opção válida)(as funcões de erro estão na primeira parte do código, uma é a de duas opcoes e a outra é de hobbies)
+ arrumar de acordo com que os usuários falaram que o entendimento ficaria melhor
+ ver melhor parte do código
+ fazer vídeos
+ ver com os monitores se está tudo certo ou se precisa colocar mais coisa
+ comentar o código
+ 
+*/
