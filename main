@@ -9,7 +9,40 @@ import Foundation
 
 // começa o código
 
-//enums
+//MARK: Erros
+enum Erros: Error {
+    case invalidOption
+    case invalidAge
+    //case invalidDate
+    case invalidName
+    case missOption
+}
+
+func validadeOption(value: Int) throws {
+    if value < 0 || value >= 5 {
+        throw Erros.invalidOption
+    }
+}
+
+func validadeAge(age: Int) throws{
+    if age < 18 || age > 100 {
+        throw Erros.invalidAge
+    }
+}
+
+func validadeName(name: String) throws{
+    if name.isEmpty || name.contains("1") || name.contains("2") || name.contains("3") || name.contains("4") || name.contains("5") || name.contains("6") || name.contains("7") || name.contains("8") || name.contains("9") || name.contains("0"){
+        throw Erros.invalidName
+    }
+}
+
+func missingOption(option: String) throws{
+    if option.isEmpty {
+        throw Erros.missOption
+    }
+}
+
+//MARK: Enums
 enum Alturas {
     case alto
     case medio
@@ -18,13 +51,13 @@ enum Alturas {
         switch indice{
         case 1:
             self = .alto
-
+            
         case 2:
             self = .medio
-
+            
         case 3:
             self = .baixo
-
+            
         default:
             //erro
             fatalError("fazer")
@@ -51,16 +84,16 @@ enum Fisicos{
         switch indice{
         case 1:
             self = .magro
-
+            
         case 2:
             self = .gordo
-
+            
         case 3:
             self = .musculoso
-
+            
         case 4:
             self = .poucoMusculo
-
+            
         default:
             //erro
             fatalError("fazer")
@@ -92,34 +125,34 @@ enum Gostos {
     case fumar
     case bebidasAlcolicas
     //colocar mais se quiser
-
+    
     init(indice : Int){
         switch indice {
-            case 1:
-                self = .jogos
-            case 2:
-                self = .esportes
-            case 3:
-                self = .viagens
-            case 4:
-                self = .filmes
-            case 5:
-                self = .series
-            case 6:
-                self = .natureza
-            case 7:
-                self = .praia
-            case 8:
-                self = .festas
-            case 9:
-                self = .fumar
-            case 10:
-                self = .bebidasAlcolicas
-            default:
-                fatalError("fazer")
+        case 1:
+            self = .jogos
+        case 2:
+            self = .esportes
+        case 3:
+            self = .viagens
+        case 4:
+            self = .filmes
+        case 5:
+            self = .series
+        case 6:
+            self = .natureza
+        case 7:
+            self = .praia
+        case 8:
+            self = .festas
+        case 9:
+            self = .fumar
+        case 10:
+            self = .bebidasAlcolicas
+        default:
+            fatalError("fazer")
         }
     }
-
+    
     var descricao : String{
         switch self{
         case .jogos:
@@ -154,13 +187,13 @@ enum Sexos {
         switch indice{
         case 1:
             self = .masculino
-
+            
         case 2:
             self = .feminino
-
+            
         case 3:
             self = .ambos
-
+            
         default:
             //erro
             fatalError("fazer")
@@ -178,91 +211,97 @@ enum Sexos {
     }
 }
 
-//classes e protocol
+//MARK: classes e protocol
 
 protocol Pessoas {
     var nome: String {get}
-    //var idade: Int {get}
-    //var dataNascimento: Date {get}
+    var idade: Int {get}
     var altura: Alturas {get set}
     var fisico: Fisicos {get set}
     var gostos: [Gostos?] {get set}
     var sexo: Sexos {get set}
-
+    
     func toString()
 }
 
 class Usuario : Pessoas{
-
+    
     var nome: String
-    //var idade: Int
-    //var dataNascimento: Date
+    var idade: Int
+    var dataNascimento: Date
     var altura: Alturas
     var fisico: Fisicos
     var gostos: [Gostos?]
     var rangeIdade: Int
-    //var idadeMax: Int
-    //var idadeMin: Int
+    var idadeMax: Int
+    var idadeMin: Int
     var listaMatch: [Pessoas]
     var sexo: Sexos
-
-    init(nome: String, /*dataNascimento: Date,*/ altura: Alturas, fisico: Fisicos, gostos: [Gostos], rangeIdade: Int, sexo: Sexos) {
+    
+    init(nome: String, dataNascimento: Date, altura: Alturas, fisico: Fisicos, gostos: [Gostos], rangeIdade: Int, sexo: Sexos) {
         self.nome = nome
-        //self.dataNascimento = dataNascimento
-        //idade - ver como operar com os dates
-        //idade = 18
+        self.dataNascimento = dataNascimento
+        let dataAtual = Calendar.current                                                         // cria uma variavel pra armazenar a data atual
+        let ano = dataAtual.dateComponents([.year], from: self.dataNascimento, to: Date())       // seleciona o componente ano da dataAtual e calcula a diferença entre ele e a data de hoje (Date())
+        self.idade = ano.year ?? 18                                                              // ou força o ano ou substitui por um opcional (year ?? 0)
+        if idade >= 18 {                                                                         // se receber a data no formato correto executa esse if
+            print("Bem-vindo")
+        } else if idade < 18 {
+            //erro
+            print("Você precisa ter 18 anos ou mais para acessar o aplicativo.")
+        }
         self.altura = altura
         self.fisico = fisico
         self.gostos = gostos
         self.rangeIdade = rangeIdade
-        /*
-         if (self.idade + self.rangeIdade) > 100{
-             idadeMax = 100
-         }
-         else{
-             idadeMax = self.idade + self.rangeIdade
-         }
-         idadeMax = self.rangeIdade + self.idade
+        
+        if (self.idade + self.rangeIdade) > 100{
+            idadeMax = 100
+        }
+        else{
+            idadeMax = self.idade + self.rangeIdade
+        }
+        idadeMax = self.rangeIdade + self.idade
         if (self.idade - self.rangeIdade) < 18{
             idadeMin = 18
         }
         else{
             idadeMin = self.idade - self.rangeIdade
-        }*/
+        }
         listaMatch = []
         self.sexo = sexo
     }
-
+    
     func toString() {
-        print("\(self.nome), suas preferencias atuais são:\n\n\(self.altura.descricao)\n\(self.fisico.descricao)")
-        print("colocar idadeMin e idadeMax quando idades estiverem prontas\n\(self.sexo.descricao)")
+        print("\(self.nome), suas preferencias atuais são:\n\nAltura: \(self.altura.descricao)\nFísico: \(self.fisico.descricao)")
+        print("Menor idade \(idadeMin) e Maior idade \(idadeMax)\nSexo:\(self.sexo.descricao)\nGostos de preferência:")
         for gosto in self.gostos {
             if let g = gosto{
                 print(g.descricao)
             }
         }
     }
-
+    
     func listaDeMatches(){
+        print("------------------------------------------------------------------------------------")
         for m in listaMatch{
             m.toString()
-            print("\n\n")
+            print("\n------------------------------------------------------------------------------------\n")
         }
     }
 }
 
 class Pretendentes : Pessoas{
-
+    
     var sexo: Sexos
     var nome: String
-    //var idade: Int
-    //var dataNascimento: Date
+    var idade: Int
     var altura: Alturas
     var fisico: Fisicos
     var gostos: [Gostos?]
     var deuMatch: Bool
     var possivelPretendente: Bool
-
+    
     init(sexo : Sexos, nome : String) {
         self.sexo = sexo
         self.nome = nome
@@ -280,12 +319,12 @@ class Pretendentes : Pessoas{
             escolhidos.append(g)
             gostos[i] = Gostos(indice: g)
         }
-        //dataNascimento = Date.init(timeIntervalSinceNow: -)
-        //idade = Data.init() - data
+        
+        self.idade = Int.random(in: 18 ... 100)
     }
-
+    
     func toString() {
-        print("\n\(self.nome) - idade\n\(self.altura.descricao)\n\(self.fisico.descricao)\n\(self.sexo.descricao)\nGostos:")
+        print("\n\(self.nome) - \(self.idade) anos\nAltura: \(self.altura.descricao)\nFísico: \(self.fisico.descricao)\nSexo: \(self.sexo.descricao)\nGostos:")
         for gosto in self.gostos {
             if let g = gosto{
                 print(g.descricao)
@@ -294,29 +333,28 @@ class Pretendentes : Pessoas{
     }
 }
 
-//funções
-
+//MARK: funções
 func digiteAltura() -> Alturas{
-    print("Digite a altura ideal para o seu match! \n[1] - Alto (alturas maiores que 1,86m)\n[2] - Médio (alturas entre 1,66m e 1,85m)\n[3] - Baixo (alturas até 1,65m)")
+    print("\nDigite a altura ideal para o seu match! \n[1] - Alto (alturas maiores que 1,86m)\n[2] - Médio (alturas entre 1,66m e 1,85m)\n[3] - Baixo (alturas até 1,65m)")
     var alturaNum = 0
     let entradaAltura = readLine()
-        if let str = entradaAltura {
-            if let num = Int(str){
-                alturaNum = num
-            }
+    if let str = entradaAltura {
+        if let num = Int(str){
+            alturaNum = num
         }
+    }
     return Alturas(indice: alturaNum)
 }
 
 func digiteFisico() -> Fisicos{
-    print("Digite o tipo físico ideal para o seu match! \n[1] - Magro \n[2] - Gordo \n[3] - Musculoso \n[4] - Pouco musculoso")
+    print("\nDigite o tipo físico ideal para o seu match! \n[1] - Magro \n[2] - Gordo \n[3] - Musculoso \n[4] - Pouco musculoso")
     var fisicoNum = 0
     let entradaFisico = readLine()
-        if let str = entradaFisico {
-            if let num = Int(str){
-                fisicoNum = num
-            }
+    if let str = entradaFisico {
+        if let num = Int(str){
+            fisicoNum = num
         }
+    }
     return Fisicos(indice: fisicoNum)
 }
 
@@ -324,29 +362,38 @@ func digiteGostos() -> [Gostos]{
     var continuar = 0
     var gostoNum = 0
     var gostosU: [Gostos] = []
-    print("Nos diga até 5 coisas que você gosta para encontrarmos seu Match")
+    print("\nNos diga até 5 coisas que você gosta para encontrarmos seu Match")
     for i in 0...4{
-        print("Digite o gosto \(i + 1) entre: \n[1] - Jogos \n[2] - Esportes \n[3] - Viagens \n[4] - Filmes \n[5] - Series \n[6] - Natureza \n[7] - Praia \n[8] - Festas \n[9] - Fumar \n[10] - Bebidas alcoolicas \n")
-        let entradaGosto = readLine()
+        print("Digite o interesse \(i + 1) entre: \n[1] - Jogos \n[2] - Esportes \n[3] - Viagens \n[4] - Filmes \n[5] - Series \n[6] - Natureza \n[7] - Praia \n[8] - Festas \n[9] - Fumar \n[10] - Bebidas alcoolicas \n")
+        var entradaGosto = readLine()
+        if let str = entradaGosto {
+            if let num = Int(str){
+                gostoNum = num
+            }
+        }
+        while gostosU.contains(Gostos(indice: gostoNum)){
+            print("Digite um interesse que não foi escolhido ainda entre: \n[1] - Jogos \n[2] - Esportes \n[3] - Viagens \n[4] - Filmes \n[5] - Series \n[6] - Natureza \n[7] - Praia \n[8] - Festas \n[9] - Fumar \n[10] - Bebidas alcoolicas \n")
+            entradaGosto = readLine()
             if let str = entradaGosto {
                 if let num = Int(str){
                     gostoNum = num
                 }
             }
+        }
         gostosU.append(Gostos(indice: gostoNum))
-
+        
         if i == 4 {
             break
         }
-
+        
         print("Deseja acrescentar novos gostos? \n[0] - Sim \n[1] - Não")
-
+        
         let entradaCont = readLine()
-            if let str = entradaCont {
-                if let num = Int(str){
-                    continuar = num
-                }
+        if let str = entradaCont {
+            if let num = Int(str){
+                continuar = num
             }
+        }
         if continuar == 1{
             break
         }
@@ -355,29 +402,44 @@ func digiteGostos() -> [Gostos]{
 }
 
 func digiteRange() -> Int{
-    print("Digite a faixa de idade que deseja encontrar em relaçao a sua\n Exemplo: se você tem 22 anos, em uma faixa de 3 anos irá encontrar pessoas entre 19 e 25 anos")
+    print("\nDigite a faixa de idade que deseja encontrar em relaçao a sua\nExemplo: se você tem 22 anos, em uma faixa de 3 anos irá encontrar pessoas entre 19 e 25 anos")
     var rangeU = 0
     let entradaRange = readLine()
-        if let str = entradaRange {
-            if let num = Int(str){
-                rangeU = num
-            }
+    if let str = entradaRange {
+        if let num = Int(str){
+            rangeU = num
         }
+    }
     return rangeU
 }
 
 func digiteSexo() -> Sexos{
-    print("Você procura: \n[1] - Homens \n[2] - Mulheres \n[3] - Ambos")
+    print("\nVocê procura: \n[1] - Homens \n[2] - Mulheres \n[3] - Ambos")
     var sexoNum = 0
     let entradaSexo = readLine()
-        if let str = entradaSexo {
-            if let num = Int(str){
-                sexoNum = num
-            }
+    if let str = entradaSexo {
+        if let num = Int(str){
+            sexoNum = num
         }
+    }
     return Sexos(indice: sexoNum)
 }
-//main
+
+func digiteData() -> Date{
+    let data = DateFormatter()
+    data.dateFormat = "dd/MM/yyyy"
+    while true {
+        print("\nDigite a sua data de nascimento no seguinte formato: DD/MM/AAAA. Não esqueça de separar o dia, mês e ano com a barra.")
+        let input = readLine() ?? "01/01/2004"
+        if let dataN = data.date(from: input) {                 //input recebe readLine e data recebe input em formato de data formatada
+            return dataN
+        }
+        else{
+            print("Digite uma data válida")
+        }
+    }
+}
+//MARK: main
 
 //criando lista de pretendentes aleatorios
 var listaPretendentes : [Pretendentes] = []
@@ -394,180 +456,188 @@ for i in 0...99{
 var possiveisPretendentes: [Pretendentes] = []
 //
 
-//criar usuário
+//MARK: criar usuário
 print("Bem-vindo! \nDigite seu primeiro nome!")
 var nomeU = ""
 var entradaNome = readLine()
-if let str = entradaNome {
-    nomeU = str
+var nomeV = true
+while nomeV{
+    do{
+        if let str = entradaNome {
+            try validadeName(name: str)
+            nomeU = str
+        }
+        nomeV = false
+    }
+    catch Erros.invalidName{
+        print("Digite um nome somente com letras")
+        entradaNome = readLine()
+    }
+    catch{
+        print("Erro default")
+    }
 }
 
 var alturaU = digiteAltura()
 var fisicoU = digiteFisico()
+var dataNascimentoU = digiteData()
 var gostosU: [Gostos] = digiteGostos()
 var rangeU = digiteRange()
 var sexoU = digiteSexo()
 
-var usuario =  Usuario(nome: nomeU, altura: alturaU, fisico: fisicoU, gostos: gostosU, rangeIdade: rangeU, sexo: sexoU)
+var usuario =  Usuario(nome: nomeU,dataNascimento: dataNascimentoU, altura: alturaU, fisico: fisicoU, gostos: gostosU, rangeIdade: rangeU, sexo: sexoU)
 //
 
-//menu
+//MARK: menu
 var aplicacao = true
 var opcaoMenu = -1
 while (aplicacao) {
     print("\nOlá \(usuario.nome), bem vindo ao SWIFTINDER 🔥, o que pretende fazer?\n\n[1]- Dar Match\n[2]- Editar Perfil\n[3]- Suas Preferências Atuais\n[4]- Ver Lista de Matches\n\n[0]- Sair da aplicacao")
+    
     let entradaMenu = readLine()
-        if let str = entradaMenu {
-            if let num = Int(str){
-                opcaoMenu = num
+    
+    do {
+        if let str = entradaMenu, let num = Int(str) {
+            try missingOption(option: str)
+            try validadeOption(value: num)
+            opcaoMenu = num
+        }
+    }
+    catch Erros.invalidOption {
+        print("Opção invalida, tente novamente")
+        continue
+    }
+    catch Erros.missOption{
+        print("Escreva algum valor")
+        continue
+    }
+    catch {
+        print("Erro default")
+    }
+    
+    switch opcaoMenu {
+    case 1:
+        //MARK: dar match
+        possiveisPretendentes.removeAll()
+        for p in listaPretendentes{
+            var entrou = false
+            if p.deuMatch == false{
+                p.possivelPretendente = false
+            }
+            for gosto in usuario.gostos{
+                guard let g = gosto else{
+                    continue
+                }
+                if p.gostos.contains(g){
+                    possiveisPretendentes.append(p)
+                    p.possivelPretendente = true
+                    entrou = true
+                    break
+                }
+            }
+            if !entrou{
+                continue
+            }
+            if p.idade<usuario.idadeMin || p.idade>usuario.idadeMax{
+                possiveisPretendentes.removeLast()
+                p.possivelPretendente = false
+                continue
+            }
+            if p.altura != usuario.altura{
+                possiveisPretendentes.removeLast()
+                p.possivelPretendente = false
+                continue
+            }
+            if p.fisico != usuario.fisico{
+                possiveisPretendentes.removeLast()
+                p.possivelPretendente = false
+                continue
+            }
+            if usuario.sexo != .ambos && p.sexo != usuario.sexo{
+                possiveisPretendentes.removeLast()
+                p.possivelPretendente = false
+                continue
             }
         }
-
-    switch opcaoMenu {
-        case 1:
-            //dar match
-            possiveisPretendentes.removeAll()
-            for p in listaPretendentes{
-                var entrou = false
-                if p.deuMatch == false{
-                    p.possivelPretendente = false
-                }
-                for gosto in usuario.gostos{
-                    guard let g = gosto else{
-                        continue
-                    }
-                    if p.gostos.contains(g){
-                        possiveisPretendentes.append(p)
-                        p.possivelPretendente = true
-                        entrou = true
-                        break
-                    }
-                }
-                if !entrou{
-                    continue
-                }
-                if p.altura != usuario.altura{
-                    possiveisPretendentes.removeLast()
-                    p.possivelPretendente = false
-                    continue
-                }
-                if p.fisico != usuario.fisico{
-                    possiveisPretendentes.removeLast()
-                    p.possivelPretendente = false
-                    continue
-                }
-                if usuario.sexo != .ambos && p.sexo != usuario.sexo{
-                    possiveisPretendentes.removeLast()
-                    p.possivelPretendente = false
-                    continue
+        for p in possiveisPretendentes{
+            print("------------------------------------------------------------------------------------")
+            p.toString()
+            print("------------------------------------------------------------------------------------\n")
+            print("Digite [1] para ❌, [2] para 💚 e [0] para voltar ao menu principal")
+            var matchNum = -1
+            let entradaMatch = readLine()
+            if let str = entradaMatch {
+                if let num = Int(str){
+                    matchNum = num
                 }
             }
-            for p in possiveisPretendentes{
-                print("------------------------------------------------------------------------------------")
-                p.toString()
-                print("------------------------------------------------------------------------------------\n")
-                print("Digite [1] para ❌, [2] para 💚 e [0] para voltar ao menu principal")
-                var matchNum = -1
-                let entradaMatch = readLine()
-                    if let str = entradaMatch {
-                        if let num = Int(str){
-                            matchNum = num
-                        }
-                    }
-                switch matchNum {
-                    case 2:
-                        var match = Bool.random()
-                        if match {
-                            p.deuMatch = true
-                            usuario.listaMatch.append(p)
-                        }
-                    case 1:
-                        continue
-                    case 0:
-                        break
-                    default:
-                        print("Opção inváldia")
+            switch matchNum {
+            case 2:
+                let match = Bool.random()
+                if match {
+                    print("MATCH!!")
+                    print("\(usuario.nome) ❤️ \(p.nome)")
+                    p.deuMatch = true
+                    usuario.listaMatch.append(p)
+                }
+            case 1:
+                continue
+            case 0:
+                break
+            default:
+                print("Opção inváldia")
+            }
+        }
+        
+    case 2:
+        //MARK: editar perfil
+        var edicaoPerfil = true
+        var edicaoNum = -1
+        while edicaoPerfil {
+            print("Qual informação de preferencia quer mudar?\n[1] - Altura\n[2] - Físico\n[3] - Gostos\n[4] - Faixa de Idade\n[5] - Sexo\n\n[0] - Retornar")
+            let entradaEdicao = readLine()
+            if let str = entradaEdicao {
+                if let num = Int(str){
+                    edicaoNum = num
                 }
             }
-
-        case 2:
-        //editar perfil
-            var edicaoPerfil = true
-            var edicaoNum = -1
-            while edicaoPerfil {
-                print("Qual informação de preferencia quer mudar?\n[1] - Altura\n[2] - Físico\n[3] - Gostos\n[4] - Faixa de Idade\n[5] - Sexo\n\n[0] - Retornar")
-                let entradaEdicao = readLine()
-                    if let str = entradaEdicao {
-                        if let num = Int(str){
-                            edicaoNum = num
-                        }
-                    }
-                switch edicaoNum {
-                    case 1:
-                        usuario.altura = digiteAltura()
-
-                    case 2:
-                        usuario.fisico = digiteFisico()
-
-                    case 3:
-                        usuario.gostos = digiteGostos()
-
-                    case 4:
-                        usuario.rangeIdade = digiteRange()
-
-                    case 5:
-                        usuario.sexo = digiteSexo()
-
-                    case 0:
-                        edicaoPerfil = false
-
-                    default:
-                        print("Digite uma opção válida")
-
-
-                }
+            switch edicaoNum {
+            case 1:
+                usuario.altura = digiteAltura()
+                
+            case 2:
+                usuario.fisico = digiteFisico()
+                
+            case 3:
+                usuario.gostos = digiteGostos()
+                
+            case 4:
+                usuario.rangeIdade = digiteRange()
+                
+            case 5:
+                usuario.sexo = digiteSexo()
+                
+            case 0:
+                edicaoPerfil = false
+                
+            default:
+                print("Digite uma opção válida")
+                
+                
             }
-        case 3:
-            usuario.toString()
-        case 4:
-            usuario.listaDeMatches()
-        case 0:
-            aplicacao = false
-
-        default:
-            print("Digite uma opção válida")
+        }
+    case 3:
+        usuario.toString()
+    case 4:
+        usuario.listaDeMatches()
+    case 0:
+        aplicacao = false
+        
+    default:
+        print("Digite uma opção válida")
     }
-
+    
 }
 
 print("\n\nOBRIGADO POR USAR O SWIFTINDER 🔥")
 //menu
-
-
-
-
-
-// MARK: SUGESTAO DE COMO PODEMOS APLICAR O DATE PARA CALCULAR IDADE E VERIFICAR SE É +18
-
-
-//let data = DateFormatter()
-//data.dateFormat = "dd/MM/aaaa"
-//// inicializa o date e formata modelo dd/mm/aaaa
-//
-//print("Digite a sua data de nascimento no seguinte formato: DD/MM/AAAA. Não esqueça de separar o dia, mês e ano com a barra.")
-//
-//if let input = readLine(), let data = data.date(from: input) {                 //input recebe readLine e data recebe input em formato de data formatada
-//    let dataAtual = Calendar.current                                        // cria uma variavel pra armazenar a data atual
-//    let ano = dataAtual.dateComponents([.year], from: data, to: Date())     // seleciona o componente ano da dataAtual e calcula a diferença entre ele e a data de hoje (Date())
-//    let idade = ano.year!                                                    // ou força o ano ou substitui por um opcional (year ?? 0)
-//    if idade >= 18 {                                                        // se receber a data no formato correto executa esse if
-//        print("Bem-vindo")
-//    } else if idade < 18 {
-//        print("Você precisa ter 18 anos ou mais para acessar o aplicativo.")
-//    }
-//} else {                                                                    // senão mostra mensagem de erro.
-//    print("Data de nascimento inválida. Tente novamente, agora inserindo o dia de seu nascimento com dois dígitos + / + mês de nascimento com dois dígitos + / + ano de nascimento com 4 dígitos numéricos.")
-//                                                                            // além do print, poderia recomeçar ao inves de encerrar.
-//}
-
-
