@@ -432,6 +432,21 @@ class Usuario : Pessoas{
             print("\n------------------------------------------------------------------------------------\n")
         }
     }
+    
+    func newRange(){
+        if (self.idade + self.rangeIdade) > 100{
+            idadeMax = 100
+        }
+        else{
+            idadeMax = self.idade + self.rangeIdade
+        }
+        if (self.idade - self.rangeIdade) < 18{
+            idadeMin = 18
+        }
+        else{
+            idadeMin = self.idade - self.rangeIdade
+        }
+    }
 }
 
 //classe dos pretendentes aleatórios do usuário
@@ -551,7 +566,7 @@ func digiteGostos() -> [Gostos]{
                     }
                 }
                 while gostosU.contains(Gostos(indice: gostoNum)){
-                    print("Digite um interesse que não foi escolhido ainda entre: \n[1] - Jogos \n[2] - Esportes \n[3] - Viagens \n[4] - Filmes \n[5] - Series \n[6] - Natureza \n[7] - Praia \n[8] - Festas \n[9] - Fumar \n[10] - Bebidas alcoolicas \n")
+                    print("Digite um interesse que não foi escolhido ainda entre: \n[1] - Jogos \n[2] - Esportes \n[3] - Viagens \n[4] - Filmes \n[5] - Series \n[6] - Natureza \n[7] - Praia \n[8] - Festas \n[9] - Fumar \n[10] - Bebidas alcoolicas\n[11] - Música \n[12] - Academia \n")
                     entradaGosto = readLine()
                     if let str = entradaGosto {
                         if let num = Int(str){
@@ -738,7 +753,7 @@ while (aplicacao) {
         continue
     }
     catch {
-        print("Erro default")
+        print("Error")
     }
     
     switch opcaoMenu {
@@ -756,7 +771,7 @@ while (aplicacao) {
                 guard let g = gosto else{
                     continue
                 }
-                if p.gostos.contains(g){
+                if p.gostos.contains(g) && p.deuMatch == false{
                     possiveisPretendentes.append(p)
                     p.possivelPretendente = true
                     entrou = true
@@ -862,6 +877,7 @@ while (aplicacao) {
                     
                 case 4:
                     usuario.rangeIdade = digiteRange()
+                    usuario.newRange()
                     
                 case 5:
                     usuario.sexo = digiteSexo()
