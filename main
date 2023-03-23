@@ -12,8 +12,10 @@ import Foundation
 //MARK: Erros
 enum Erros: Error {
 	case invalidOptionMenu
+	case invalidFisic
+	case invalidHeight
 	case invalidHobbie
-	case invalidThreeOptions
+	case invalidSex
 	case invalidOptionEdit
 	case invalidTwoOptions
 	case invalidAge
@@ -35,14 +37,26 @@ func validadeOptionMenu(value: Int) throws {
 	}
 }
 
-func validadeOptionThree(value: Int) throws {
+func validadeSex(value: Int) throws {
 	if value <= 0 || value >= 4 {
-		throw Erros.invalidThreeOptions
+		throw Erros.invalidSex
+	}
+}
+
+func validadeHeight(value: Int) throws {
+	if value < 1 || value > 4{
+		throw Erros.invalidHeight
+	}
+}
+
+func validadeFisic(value: Int) throws {
+	if value < 1 || value > 5{
+		throw Erros.invalidFisic
 	}
 }
 
 func validadeOptionTwo(value: Int) throws {
-	if value <= -1 || value >= 2 {
+	if value < 1 || value > 2 {
 		throw Erros.invalidTwoOptions
 	}
 }
@@ -65,10 +79,12 @@ func validadeAge(age: Int) throws{
 	}
 }
 
-func validadeName(name: String) throws{
-	if name.isEmpty || name.contains("1") || name.contains("2") || name.contains("3") || name.contains("4") || name.contains("5") || name.contains("6") || name.contains("7") || name.contains("8") || name.contains("9") || name.contains("0"){
+func validadeName(name: String) throws {
+	
+	guard (name.range(of: "[a-zA-Z]", options: .regularExpression) != nil) else {
 		throw Erros.invalidName
 	}
+	
 }
 
 func missingOption(option: String) throws{
@@ -88,6 +104,7 @@ enum Alturas {
 	case alto
 	case medio
 	case baixo
+	case qualquerA
 	init(indice : Int){
 		
 		switch indice{
@@ -99,10 +116,13 @@ enum Alturas {
 			
 		case 3:
 			self = .baixo
-			
+				
+		case 4:
+			self = .qualquerA
+				
 		default:
 			//erro
-			fatalError("fazer")
+			fatalError("Error")
 		}
 	}
 	var descricao : String{
@@ -113,6 +133,8 @@ enum Alturas {
 			return "Médio"
 		case .baixo:
 			return "Baixo"
+		case .qualquerA:
+			return "Todos"
 		}
 	}
 }
@@ -122,6 +144,7 @@ enum Fisicos{
 	case gordo
 	case musculoso
 	case poucoMusculo
+	case qualquerF
 	init(indice: Int) {
 		switch indice{
 		case 1:
@@ -135,22 +158,27 @@ enum Fisicos{
 			
 		case 4:
 			self = .poucoMusculo
-			
+				
+		case 5:
+			self = .qualquerF
+				
 		default:
 			//erro
-			fatalError("fazer")
+			fatalError("Error")
 		}
 	}
 	var descricao : String{
 		switch self{
 		case .magro:
-			return "Magro"
+			return "Seco"
 		case .gordo:
-			return "Gordo"
+			return "Barriguinha"
 		case .musculoso:
-			return "Musculoso"
+			return "Tanquinho"
 		case .poucoMusculo:
-			return "Pouco Musculoso"
+			return "Pouco Definido"
+		case .qualquerF:
+			return "Todos"
 		}
 	}
 }
@@ -196,7 +224,7 @@ enum Gostos {
 		case 12:
 			self = .academia
 		default:
-			fatalError("fazer")
+			fatalError("Error")
 		}
 	}
 	
@@ -247,7 +275,7 @@ enum Sexos {
 			
 		default:
 			//erro
-			fatalError("fazer")
+			fatalError("Error")
 		}
 	}
 	var descricao : String{
@@ -391,7 +419,7 @@ class Pretendentes : Pessoas{
 
 //MARK: funções
 func digiteAltura() -> Alturas{
-	print("\nDigite a altura ideal para o seu match! \n[1] - Alto (alturas maiores que 1,86m)\n[2] - Médio (alturas entre 1,66m e 1,85m)\n[3] - Baixo (alturas até 1,65m)")
+	print("\nDigite a altura ideal para o seu match! \n[1] - Alto (alturas maiores que 1,86m)\n[2] - Médio (alturas entre 1,66m e 1,85m)\n[3] - Baixo (alturas até 1,65m)\n[4] - Gosto de todos")
 	var alturaNum = 0
 	var validA = true
 	while validA{
@@ -399,14 +427,14 @@ func digiteAltura() -> Alturas{
 		do{
 			if let str = entradaAltura {
 				if let num = Int(str){
-					try validadeOptionThree(value: num)
+					try validadeHeight(value: num)
 					alturaNum = num
 				}
 			}
 			validA = false
 		}
-		catch Erros.invalidThreeOptions{
-			print("Digite uma das opcoes validas\n[1] - Alto (alturas maiores que 1,86m)\n[2] - Médio (alturas entre 1,66m e 1,85m)\n[3] - Baixo (alturas até 1,65m)")
+		catch Erros.invalidHeight{
+			print("\nOpção inválida. Digite uma das seguintes opções:\n[1] - Alto (Acima de 1,86m)\n[2] - Médio (Entre 1,66m e 1,85m)\n[3] - Baixo (Até 1,65m)\n[4] - Gosto de todos")
 		}
 		catch{
 			print("Error")
@@ -416,7 +444,7 @@ func digiteAltura() -> Alturas{
 }
 
 func digiteFisico() -> Fisicos{
-	print("\nDigite o tipo físico ideal para o seu match! \n[1] - Magro \n[2] - Gordo \n[3] - Musculoso \n[4] - Pouco musculoso")
+	print("\nDigite o tipo físico ideal para o seu match! \n[1] - Seco \n[2] - Barriguinha \n[3] - Tanquinho \n[4] - Pouco definido\n[5] - Gosto de todos")
 	var fisicoNum = 0
 	var validF = true
 	while validF{
@@ -424,14 +452,14 @@ func digiteFisico() -> Fisicos{
 		do{
 			if let str = entradaFisico {
 				if let num = Int(str){
-					try validadeOptionMenu(value: num-1)
+					try validadeFisic(value: num)
 					fisicoNum = num
 				}
 			}
 			validF = false
 		}
-		catch Erros.invalidOptionMenu{
-			print("Digite uma das opcoes validas\n[1] - Magro \n[2] - Gordo \n[3] - Musculoso \n[4] - Pouco musculoso")
+		catch Erros.invalidFisic{
+			print("Digite uma das opcoes validas:\n[1] - Seco \n[2] - Barriguinha \n[3] - Tanquinho \n[4] - Pouco definido\n[5] - Gosto de todos")
 		
 		}
 		catch{
@@ -445,12 +473,12 @@ func digiteGostos() -> [Gostos]{
 	var continuar = 0
 	var gostoNum = 0
 	var gostosU: [Gostos] = []
-	print("\nNos diga até 5 coisas que você gosta para encontrarmos seu Match")
+	print("\nNos diga até 5 coisas que você gosta para encontrarmos seu Match.")
 	for i in 0...4{
 		var verifGost = true
+		print("\nEscolha o \(i + 1)º interesse dentre os seguintes: \n[1] - Jogos \n[2] - Esportes \n[3] - Viagens \n[4] - Filmes \n[5] - Series \n[6] - Natureza \n[7] - Praia \n[8] - Festas \n[9] - Fumar \n[10] - Bebidas alcoolicas \n[11] - Música \n[12] - Academia")
 		while verifGost {
 			do{
-				print("Digite o interesse \(i + 1) entre: \n[1] - Jogos \n[2] - Esportes \n[3] - Viagens \n[4] - Filmes \n[5] - Series \n[6] - Natureza \n[7] - Praia \n[8] - Festas \n[9] - Fumar \n[10] - Bebidas alcoolicas \n[11] - Música \n[12] - Academia")
 				var entradaGosto = readLine()
 				if let str = entradaGosto {
 					if let num = Int(str){
@@ -483,7 +511,7 @@ func digiteGostos() -> [Gostos]{
 			break
 		}
 		
-		print("Deseja acrescentar novos gostos? \n[0] - Sim \n[1] - Não")
+		print("Deseja acrescentar novos gostos? \n[1] - Sim \n[2] - Não")
 		var verAc = true
 		while verAc {
 			do{
@@ -497,13 +525,13 @@ func digiteGostos() -> [Gostos]{
 				verAc = false
 			}
 			catch Erros.invalidTwoOptions{
-				print("Digite uma das duas opções válidas:\n[0] - Sim \n[1] - Não")
+				print("Digite uma das duas opções válidas:\n[1] - Sim \n[2] - Não")
 			}
 			catch{
 				print("Error")
 			}
 		}
-		if continuar == 1{
+		if continuar == 2{
 			break
 		}
 	}
@@ -511,7 +539,7 @@ func digiteGostos() -> [Gostos]{
 }
 
 func digiteRange() -> Int{
-	print("\nDigite a faixa de idade que deseja encontrar em relaçao a sua\nExemplo: se você tem 22 anos, em uma faixa de 3 anos irá encontrar pessoas entre 19 e 25 anos")
+	print("\nConsiderando a sua idade, digite uma diferença entre idades aceitável.\nPor exemplo, se você possui 25 anos e deseja encontrar pessoas com idades entre 23 e 27 anos, digite \"2\".")
 	var rangeU = 0
 	let entradaRange = readLine()
 	if let str = entradaRange {
@@ -531,13 +559,13 @@ func digiteSexo() -> Sexos{
 		do{
 			if let str = entradaSexo {
 				if let num = Int(str){
-					try validadeOptionThree(value: num)
+					try validadeSex(value: num)
 					sexoNum = num
 				}
 			}
 			validA = false
 		}
-		catch Erros.invalidThreeOptions{
+		catch Erros.invalidSex{
 			print("Digite uma das opcoes validas\n[1] - Homens \n[2] - Mulheres \n[3] - Ambos")
 		}
 		catch{
@@ -574,19 +602,21 @@ func digiteData() -> Date{
 var listaPretendentes : [Pretendentes] = []
 let listaNomesFemininos: [String] = ["Julia", "Sohpia", "Isabella", "Maria Eduarda", "Manuela", "Giovana", "Alice", "Laura", "Luiza", "Beatriz", "Mariana", "Yasmin", "Gabriela", "Rafaela", "Maria Clara", "Ana Clara", "Isabelle", "Lara", "Letícia", "Ana Julia", "Ana", "Nicole", "Valentina"]
 let listaNomesMasculinos: [String] = ["Miguel", "Arthur", "Gael", "Théo", "Heitor", "Ravi", "Davi", "Bernardo", "Noah", "Gabriel", "Samuel", "Pedro", "Anthony", "Isaac", "Benício", "Benjamin", "Matheus", "Lucas"]
+let listaSobrenomes: [String] = ["Silva", "Santos"]
+
 for i in 0...99{
 	if i < 50{
-		listaPretendentes.append(Pretendentes(sexo: .masculino, nome: listaNomesMasculinos[Int.random(in: 0...(listaNomesMasculinos.count-1))]))
+		listaPretendentes.append(Pretendentes(sexo: .masculino, nome: (listaNomesMasculinos[Int.random(in: 0...(listaNomesMasculinos.count-1))]) + " " + listaSobrenomes[Int.random(in: 0...(listaSobrenomes.count-1))]))
 	}
 	else{
-		listaPretendentes.append(Pretendentes(sexo: .feminino, nome: listaNomesFemininos[Int.random(in: 0...(listaNomesFemininos.count-1))]))
+		listaPretendentes.append(Pretendentes(sexo: .feminino, nome: (listaNomesFemininos[Int.random(in: 0...(listaNomesFemininos.count-1))]) + " " + listaSobrenomes[Int.random(in: 0...(listaSobrenomes.count-1))]))
 	}
 }
 var possiveisPretendentes: [Pretendentes] = []
 //
 
 //MARK: criar usuário
-print("Bem-vindo! \nDigite seu primeiro nome!")
+print("\nBem-vindo! \n\nDigite seu nome!")
 var nomeU = ""
 var entradaNome = readLine()
 var nomeV = true
@@ -621,7 +651,7 @@ var usuario =  Usuario(nome: nomeU,dataNascimento: dataNascimentoU, altura: altu
 var aplicacao = true
 var opcaoMenu = -1
 while (aplicacao) {
-	print("\nOlá \(usuario.nome), bem vindo ao SWIFTINDER 🔥, o que pretende fazer?\n\n[1]- Dar Match\n[2]- Editar Perfil\n[3]- Suas Preferências Atuais\n[4]- Ver Lista de Matches\n\n[0]- Sair da aplicacao")
+	print("\nOlá, \(usuario.nome)! \nBem-vindo ao SWIFTINDER 🔥.\nO que deseja fazer?\n\n[1]- DAR MATCHES\n[2]- Editar suas preferências\n[3]- Visualizar suas preferências atuais\n[4]- Visualizar lista de Matches\n\n[0]- Sair da aplicacao")
 	
 	let entradaMenu = readLine()
 	
@@ -672,12 +702,12 @@ while (aplicacao) {
 				p.possivelPretendente = false
 				continue
 			}
-			if p.altura != usuario.altura{
+			if p.altura != usuario.altura && usuario.altura != Alturas.qualquerA{
 				possiveisPretendentes.removeLast()
 				p.possivelPretendente = false
 				continue
 			}
-			if p.fisico != usuario.fisico{
+			if p.fisico != usuario.fisico && usuario.fisico != Fisicos.qualquerF{
 				possiveisPretendentes.removeLast()
 				p.possivelPretendente = false
 				continue
@@ -794,13 +824,11 @@ print("\n\nOBRIGADO POR USAR O SWIFTINDER 🔥")
 
 /*FALTA:
 
- FEITO Erros na função de definicao dos gostos do usuario, tanto se colcoar um gosto que não existe quanto se entre colocar um gosto a mais ou não a pessoa quer ou não(SEGUIR O EXEMPLO QUE O IGOR NOS PASSOU QUE ESTÁ NO MENU PRINCIPAL) (fazer while para ficar pedindo até a pessoa colocar uma opção válida)(as funcões de erro estão na primeira parte do código, uma é a de duas opcoes e a outra é de hobbies)
- arrumar de acordo com que os usuários falaram que o entendimento ficaria melhor
- 
- FALTA
- ver melhor parte do código
- fazer vídeos
+ video e melhor parte do código
+ erro do espaco em branco
+ |
  ver com os monitores se está tudo certo ou se precisa colocar mais coisa
+ |
  comentar o código
  
 */
