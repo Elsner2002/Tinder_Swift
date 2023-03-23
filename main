@@ -7,7 +7,6 @@
 
 import Foundation
 import AVFoundation
-// começa o código
 
 //MARK: Erros
 enum Erros: Error {
@@ -126,7 +125,7 @@ func validadeDate(data: String) throws{
 //MARK: Função do Som
 var player: AVAudioPlayer!
 func playMatchSound() {
-    var som = Int.random(in: 1...4)
+    let som = Int.random(in: 1...4)
     switch som{
         case 1:
             if let url = Bundle.main.url(forResource: "Ele gosta", withExtension: "mp3"){
@@ -156,6 +155,8 @@ func playMatchSound() {
 }
 
 //MARK: Enums
+
+//Todos os enums tem um init para escolher pelo número e uma descrição para prints futuros
 enum Alturas {
     case alto
     case medio
@@ -348,6 +349,7 @@ enum Sexos {
 
 //MARK: classes e protocol
 
+//protocol da base das pessoas
 protocol Pessoas {
     var nome: String {get}
     var idade: Int {get}
@@ -359,6 +361,7 @@ protocol Pessoas {
     func toString()
 }
 
+// classe do usuário que estará usando a aplicação
 class Usuario : Pessoas{
     
     var nome: String
@@ -431,6 +434,7 @@ class Usuario : Pessoas{
     }
 }
 
+//classe dos pretendentes aleatórios do usuário
 class Pretendentes : Pessoas{
     
     var sexo: Sexos
@@ -474,6 +478,8 @@ class Pretendentes : Pessoas{
 }
 
 //MARK: funções
+
+//funcao que pede a altura de preferencia do usuário
 func digiteAltura() -> Alturas{
     print("\nDigite a altura ideal para o seu match! \n[1] - Alto (alturas maiores que 1,86m)\n[2] - Médio (alturas entre 1,66m e 1,85m)\n[3] - Baixo (alturas até 1,65m)\n[4] - Gosto de todos")
     var alturaNum = 0
@@ -499,6 +505,7 @@ func digiteAltura() -> Alturas{
     return Alturas(indice: alturaNum)
 }
 
+//funcao que pede o físico de preferencia do usuário
 func digiteFisico() -> Fisicos{
     print("\nDigite o tipo físico ideal para o seu match! \n[1] - Seco \n[2] - Barriguinha \n[3] - Tanquinho \n[4] - Pouco definido\n[5] - Gosto de todos")
     var fisicoNum = 0
@@ -525,6 +532,7 @@ func digiteFisico() -> Fisicos{
     return Fisicos(indice: fisicoNum)
 }
 
+//funcao que pede os interesses de preferencia do usuário
 func digiteGostos() -> [Gostos]{
     var continuar = 0
     var gostoNum = 0
@@ -594,6 +602,7 @@ func digiteGostos() -> [Gostos]{
     return gostosU
 }
 
+//funcao que pede a faixa de idade de preferencia do usuário
 func digiteRange() -> Int{
     print("\nConsiderando a sua idade, digite uma diferença entre idades aceitável.\nPor exemplo, se você possui 25 anos e deseja encontrar pessoas com idades entre 23 e 27 anos, digite \"2\".")
     var rangeU = 0
@@ -606,6 +615,7 @@ func digiteRange() -> Int{
     return rangeU
 }
 
+//funcao que pede o sexo de preferencia do usuário
 func digiteSexo() -> Sexos{
     print("\nVocê procura: \n[1] - Homens \n[2] - Mulheres \n[3] - Ambos")
     var sexoNum = 0
@@ -631,6 +641,7 @@ func digiteSexo() -> Sexos{
     return Sexos(indice: sexoNum)
 }
 
+//funcao que pede a data de nascimento do usuário
 func digiteData() -> Date{
     let data = DateFormatter()
     data.dateFormat = "dd/MM/yyyy"
@@ -654,7 +665,7 @@ func digiteData() -> Date{
 }
 //MARK: main
 
-//MARK: criando lista de pretendentes aleatorios
+//MARK: cria a lista de pretendentes aleatorios
 var listaPretendentes : [Pretendentes] = []
 let listaNomesFemininos: [String] = ["Julia", "Sohpia", "Isabella", "Maria Eduarda", "Manuela", "Giovana", "Alice", "Laura", "Luiza", "Beatriz", "Mariana", "Yasmin", "Gabriela", "Rafaela", "Maria Clara", "Ana Clara", "Isabelle", "Lara", "Letícia", "Ana Julia", "Ana", "Nicole", "Valentina"]
 let listaNomesMasculinos: [String] = ["Miguel", "Arthur", "Gael", "Théo", "Heitor", "Ravi", "Davi", "Bernardo", "Noah", "Gabriel", "Samuel", "Pedro", "Anthony", "Isaac", "Benício", "Benjamin", "Matheus", "Lucas"]
@@ -671,7 +682,8 @@ for i in 0...99{
 var possiveisPretendentes: [Pretendentes] = []
 //
 
-//MARK: criar usuário
+//MARK: cria usuário com as informações passadas pelo terminal
+
 print("\nBem-vindo! \n\nDigite seu nome!")
 var nomeU = ""
 var entradaNome = readLine()
@@ -692,7 +704,6 @@ while nomeV{
         print("Erro default")
     }
 }
-
 var alturaU = digiteAltura()
 var fisicoU = digiteFisico()
 var dataNascimentoU = digiteData()
@@ -734,6 +745,8 @@ while (aplicacao) {
     case 1:
         //MARK: dar match
         possiveisPretendentes.removeAll()
+        
+        //faz uma lista de pretendentes que correspondem aos gostos do usuário
         for p in listaPretendentes{
             var entrou = false
             if p.deuMatch == false{
@@ -774,6 +787,8 @@ while (aplicacao) {
                 continue
             }
         }
+        
+        //da as opções de matches de acordo com as preferências do usuário
         for p in possiveisPretendentes{
             print("------------------------------------------------------------------------------------")
             p.toString()
@@ -801,7 +816,8 @@ while (aplicacao) {
                     entradaMatch = readLine()
                 }
             }
-
+            
+            //decide aleatórimente se vai dar match com o usuário ou não
             if matchNum == 2{
                 let match = Bool.random()
                 if match {
@@ -865,10 +881,13 @@ while (aplicacao) {
             }
         }
     case 3:
+        //Ver preferências do usuário
         usuario.toString()
     case 4:
+        //Ver lista de matches do usuário
         usuario.listaDeMatches()
     case 0:
+        //Sair da aplicação
         aplicacao = false
         
     default:
