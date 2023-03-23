@@ -686,8 +686,8 @@ let listaNomesFemininos: [String] = ["Julia", "Sohpia", "Isabella", "Maria Eduar
 let listaNomesMasculinos: [String] = ["Miguel", "Arthur", "Gael", "Théo", "Heitor", "Ravi", "Davi", "Bernardo", "Noah", "Gabriel", "Samuel", "Pedro", "Anthony", "Isaac", "Benício", "Benjamin", "Matheus", "Lucas"]
 let listaSobrenomes: [String] = ["Silva", "Frisina", "Brum", "Pretto", "Riboli", "Masiero", "Teixeira", "Ilunga", "Serafini", "Lopes", "Martins", "Diefenbach", "Gusmão", "Thomas", "Cunha", "Claus", "Costa", "Maciel", "Venturini", "Pizzol", "Muller", "Ramos", "Sartori", "Dias", "Scherer", "Batistella", "Schostack", "Fernandes", "d'Alençol", "Araujo", "Stédile", "Fontanive", "Cavali", "Silvano", "Dourado", "Brendler", "Carneiro", "Gusmão", "Sakakibara", "Lemos", "Souto", "Yamaguti", "Godinho", "Izolan", "Trindade"]
 
-for i in 0...99{
-    if i < 50{
+for i in 0...999{
+    if i < 500{
         listaPretendentes.append(Pretendentes(sexo: .masculino, nome: (listaNomesMasculinos[Int.random(in: 0...(listaNomesMasculinos.count-1))]) + " " + listaSobrenomes[Int.random(in: 0...(listaSobrenomes.count-1))]))
     }
     else{
